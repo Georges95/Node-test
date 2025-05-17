@@ -2,12 +2,24 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-app.get('/', (request, response)=> {
-    response.sendFile(__dirname +'/index.html');
+app.set("views", "templates");
+app.set("view engine", "twig");
+
+app.use(express.static('public'));
+
+app.use((req, res, next) => {
+    req.message = "message du middleware";
+    next();
 });
 
-app.get('/contact', (request, response)=> {
-    response.sendFile(__dirname +'/contact.html');
+app.get('/', (req, res)=> {
+    //res.sendFile(__dirname + '/index.html');
+    res.render('index', { title: "Home page" });
+});
+
+app.get('/contact', (req, res)=> {
+    //res.sendFile(__dirname +'/contact.html');
+    res.render('contact');
 });
 
 
